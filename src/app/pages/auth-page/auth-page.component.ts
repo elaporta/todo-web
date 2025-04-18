@@ -20,7 +20,7 @@ export default class AuthPageComponent {
   private router = inject(Router);
 
   authForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email, Validators.pattern(/.*\.[a-z]{2,3}$/)]]
   });
 
   isLoading = false;
