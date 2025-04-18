@@ -1,0 +1,11 @@
+.list-group-item {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--light-color);
+  }
+
+  .form-check-input:checked + label {
+    color: var(--secondary-color);
+  }
+}

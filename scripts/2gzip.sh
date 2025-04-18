@@ -1,0 +1,2 @@
+#!/bin/bash
+find $1 -type f \( -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.svg' -o -name '*.txt' -o -name '*.eot' -o -name '*.otf' -o -name '*.ttf' -o -name '*.gif' \) -exec echo 'Compressing "'{}'"' \; -exec gzip -k -9 -f {} \; -exec mv {}.gz {}.gzip \;

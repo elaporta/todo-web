@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">Welcome</h2>
+        
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter your email" autocomplete="email" [class.is-invalid]="email.invalid && email.touched">
+
+            @if(email.invalid && email.touched) {
+              <div class="invalid-feedback">
+                Please enter a valid email address
+              </div>
+            }
+          </div>
+          
+          <button type="submit"  class="btn btn-primary w-100" [disabled]="authForm.invalid || isLoading">
+            @if(isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            }
+            Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if(showRegisterModal) {
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">New Account</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <p>Would you like to create a new account with {{ email.value }}?</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="register()" [disabled]="isLoading">
+
+            @if(isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            }
+            Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+}

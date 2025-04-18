@@ -1,0 +1,57 @@
+// Variables
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #17a2b8;
+$light: #f8f9fa;
+$dark: #343a40;
+
+@use "bootstrap/scss/bootstrap" with (
+  $primary: $primary,
+  $secondary: $secondary,
+  $success: $success,
+  $danger: $danger,
+  $warning: $warning,
+  $info: $info,
+  $light: $light,
+  $dark: $dark
+);
+
+// Global styles
+:root {
+  --primary-color: #{$primary};
+  --secondary-color: #{$secondary};
+  --success-color: #{$success};
+  --danger-color: #{$danger};
+  --warning-color: #{$warning};
+  --info-color: #{$info};
+  --light-color: #{$light};
+  --dark-color: #{$dark};
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+// Accessibility
+:focus {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

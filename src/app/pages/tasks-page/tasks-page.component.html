@@ -1,0 +1,117 @@
+<div class="row mb-4">
+  <div class="col">
+    <h1>Todo List</h1>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-danger" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col">
+    <form [formGroup]="taskForm" (ngSubmit)="createTask()">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Add a new task" formControlName="title" [class.is-invalid]="title.invalid && title.touched">
+        <button class="btn btn-primary" type="submit" [disabled]="taskForm.invalid || isLoading">
+          @if(isLoading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          }
+          Add Task
+        </button>
+      </div>
+
+      @if(title.invalid && title.touched) {
+        <div class="invalid-feedback d-block">
+          Please enter a task title
+        </div>
+      }
+    </form>
+  </div>
+</div>
+
+@if(tasks.length === 0) {
+  <div class="alert alert-info">
+    No tasks yet. Add your first task above!
+  </div>
+} @else {
+  <div class="list-group">
+    @for(task of tasks; track task.id) {
+      <div class="list-group-item d-flex align-items-center">
+        <input type="checkbox" class="form-check-input me-3" [checked]="task.completed" (change)="toggleTask(task)" [id]="'task-' + task.id">
+
+        @if(editingTaskId === task.id) {
+          <!-- edit task -->
+          <form [formGroup]="editForm" (ngSubmit)="updateTask(task)" class="flex-grow-1 me-3">
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="title" [class.is-invalid]="editTitle.invalid && editTitle.touched">
+              <button class="btn btn-outline-primary btn-sm" type="submit" [disabled]="editForm.invalid || isLoading">
+              Save
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" type="button" (click)="cancelEditing()" [disabled]="isLoading">
+                Cancel
+              </button>
+            </div>
+          </form>
+        } @else {
+          <!-- show task -->
+          <label [for]="'task-' + task.id" class="flex-grow-1 mb-0" [class.text-decoration-line-through]="task.completed">
+            {{ task.title | capitalizeFirst }}
+          </label>
+        }
+
+        <small class="text-muted me-3">
+          Created at: {{ task.created_at | date:'short' }}
+        </small>
+
+        @if(editingTaskId !== task.id && !task.completed) {
+          <button class="btn btn-sm btn-outline-primary me-2" (click)="startEditing(task)" [disabled]="isLoading">
+            Edit
+          </button>
+        }
+
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)" [disabled]="isLoading">
+          Delete
+        </button>
+      </div>
+    }
+  </div>
+}
+
+<!-- delete task modal -->
+@if(showDeleteModal) {
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Task</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <p>Are you sure you want to delete this task?</p>
+          @if(taskToDelete) {
+            <p class="font-weight-bold">"{{ taskToDelete.title | capitalizeFirst }}"</p>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="isLoading">
+            @if(isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            }
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+}
